@@ -1,0 +1,21 @@
+services:
+  proxy:
+    build: .
+    container_name: proxy-server
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "8000:8000"
+    volumes:
+      - ./ca:/app/ca
+      - ./certs:/app/certs
+      - ./scripts:/app/scripts
+    user: "${UID}:${GID}"
+    environment:
+      - NODE_ENV=production
+    command: sh -c "mkdir -p /app/ca /app/certs && ./scripts/gen_ca.sh && node src/proxy.js"
+
+volumes:
+  ca:
+  certs:
+  scripts:
