@@ -5,6 +5,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY scripts/ ./scripts/
 COPY src/ ./src/
+COPY params.txt ./
+COPY params_full.txt ./
 
 RUN mkdir -p /app/ca /app/certs && \
     chmod +x /app/scripts/*.sh && \

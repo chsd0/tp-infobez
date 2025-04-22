@@ -10,12 +10,23 @@ services:
       - ./ca:/app/ca
       - ./certs:/app/certs
       - ./scripts:/app/scripts
-    user: "${UID}:${GID}"
+      - ./params.txt:/app/params.txt
+    depends_on:
+      - mongo
     environment:
       - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/proxy
     command: sh -c "mkdir -p /app/ca /app/certs && ./scripts/gen_ca.sh && node src/proxy.js"
 
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
 volumes:
+  mongo_data:
   ca:
   certs:
   scripts:
